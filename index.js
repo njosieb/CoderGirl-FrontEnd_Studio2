@@ -1,10 +1,19 @@
-
-//Function should return a component displaying an astronaut's bio
 function AstronautBios(astronaut) {
-
+  let active = "false";
+  if (astronaut.active) {
+    active = "true";
+  }
   return (
-    <div>
-
+    <div className="astronaut">
+      <div className="bio">
+        <h3>{astronaut.firstName} {astronaut.lastName}</h3>
+        <ul>
+          <li>Hours in space: {astronaut.hoursInSpace}</li>
+          <li>Active: {active}</li>
+          <li>Skills: {astronaut.skills.join(", ")}</li>
+        </ul>
+      </div>
+      <img className="avatar" src={astronaut.picture}/>
     </div>
   )
 }
@@ -15,11 +24,14 @@ function getData() {
       return response.json()
     }) 
     .then(function(data) {
-      //Render all astronaut bios. 
-      //The AstronautBios component should be repeated to display bios for all 
-      //astronaunts in the returned data object.
-      
-      //Then attach to the 'root' div!
+      console.log(data)
+      const astronautElements = [];
+      for (let i = 0; i < data.length; i++) {
+        astronautElements.push(AstronautBios(data[i]))
+      }
+      const rootElement = document.querySelector('#root');
+      const appElement = <div className="container">{astronautElements}</div>
+      ReactDOM.render(appElement, rootElement);
     })
 }
 
